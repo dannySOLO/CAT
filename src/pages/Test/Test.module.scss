@@ -1,0 +1,14 @@
+.test {
+  :global {
+    .container {
+      max-width: 80em;
+      user-select: none;
+      // text-align: center;
+      margin-top: 40px;
+
+      h2 {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}

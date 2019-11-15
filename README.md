@@ -1,1 +1,1 @@
-## Mini App CMS
+## User interface for CAT Algorithm.
