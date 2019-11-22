@@ -13,10 +13,11 @@ const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const Header = ({ sidebarToggler, currentUser, ...rest }) => {
-  const confirmLogout = () => Modal.confirm({
-    title: 'Do you sure you want to logout?',
-    onOk: () => alert('TODO'),
-  });
+  const confirmLogout = () =>
+    Modal.confirm({
+      title: 'Do you sure you want to logout?',
+      onOk: () => alert('TODO'),
+    });
 
   return (
     <Layout.Header {...rest}>
@@ -47,7 +48,10 @@ const Header = ({ sidebarToggler, currentUser, ...rest }) => {
 };
 
 const smallScreen = window.innerWidth < 576;
-const initState = { collapsed: smallScreen || window.innerWidth < 768, smallScreen };
+const initState = {
+  collapsed: smallScreen || window.innerWidth < 768,
+  smallScreen,
+};
 
 const Main = ({ header, history, location, children, className }) => {
   const [state, setState] = useState(initState);
@@ -66,7 +70,9 @@ const Main = ({ header, history, location, children, className }) => {
     />
   );
 
-  const mainStyle = { marginLeft: collapsed ? sidebarMiniWidth : config.sidebarWidth };
+  const mainStyle = {
+    marginLeft: collapsed ? sidebarMiniWidth : config.sidebarWidth,
+  };
   if (smallScreen && mainStyle.marginLeft) {
     mainStyle.marginRight = -1 * mainStyle.marginLeft;
   }
@@ -74,7 +80,9 @@ const Main = ({ header, history, location, children, className }) => {
   return (
     <Layout className={classNames(styles.main, className)}>
       <Sider
-        onBreakpoint={b => setState({ ...state, collapsed: collapsed || b, smallScreen: b })}
+        onBreakpoint={b =>
+          setState({ ...state, collapsed: collapsed || b, smallScreen: b })
+        }
         breakpoint="sm"
         collapsedWidth={sidebarMiniWidth}
         collapsible
@@ -85,7 +93,7 @@ const Main = ({ header, history, location, children, className }) => {
       >
         <div className="logo">
           {/* <img src={logo} alt="Logo" /> */}
-          <h1>Mini App</h1>
+          <h1>IRT - BASED CAT</h1>
         </div>
         <SideMenu location={location} />
       </Sider>
@@ -110,14 +118,18 @@ const Main = ({ header, history, location, children, className }) => {
 };
 
 const SideMenu = ({ location: { pathname } }) => {
-  const selectedMenu = routes.find(m => matchPath(pathname, { path: m.path, exact: m.path === '/' }));
+  const selectedMenu = routes.find(m =>
+    matchPath(pathname, { path: m.path, exact: m.path === '/' }),
+  );
   let selectedKey;
   let openedKey;
   if (selectedMenu) {
     openedKey = [selectedMenu.path];
     selectedKey = [selectedMenu.path];
     if (selectedMenu.subMenus) {
-      const sm = selectedMenu.subMenus.find(m => matchPath(pathname, { path: m.path, exact: m.path === '/' }));
+      const sm = selectedMenu.subMenus.find(m =>
+        matchPath(pathname, { path: m.path, exact: m.path === '/' }),
+      );
       if (sm) {
         selectedKey = [sm.path];
       }
@@ -125,7 +137,12 @@ const SideMenu = ({ location: { pathname } }) => {
   }
 
   return (
-    <Menu theme="light" mode="inline" selectedKeys={selectedKey} defaultOpenKeys={openedKey}>
+    <Menu
+      theme="light"
+      mode="inline"
+      selectedKeys={selectedKey}
+      defaultOpenKeys={openedKey}
+    >
       {routes.map(m => {
         if (!m.subMenus) {
           return (

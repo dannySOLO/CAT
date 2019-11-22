@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Container from '../Container/Container';
-import { Radio, Input } from 'antd';
+import { Radio, Button, Icon } from 'antd';
 
+import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
 import api from '../../services/api';
 
@@ -9,6 +10,41 @@ const TITLE = 'Test';
 
 const Test = () => {
   const [chose, setChose] = useState('');
+  const dataForChart = [
+    {
+      id: 0,
+      prediction: 5,
+    },
+    {
+      id: 1,
+      prediction: 4,
+    },
+    {
+      id: 2,
+      prediction: 6,
+    },
+    {
+      id: 3,
+      prediction: 4.5,
+    },
+    {
+      id: 4,
+      prediction: 5,
+    },
+    {
+      id: 5,
+      prediction: 5.3,
+    },
+    {
+      id: 6,
+      prediction: 5.1,
+    },
+    {
+      id: 7,
+      prediction: 5.2,
+    },
+  ];
+
   const [question, setQuestion] = useState({
     id: '0',
     content: 'Question content',
@@ -62,6 +98,10 @@ const Test = () => {
     );
   };
 
+  const confirmAnswer = () => {
+    // send setChose data to Api
+  };
+
   return (
     <Container title={TITLE}>
       <div className={styles.test}>
@@ -70,9 +110,13 @@ const Test = () => {
             Question {question.id + 1}: {question.content}
           </h2>
           {showQuestion()}
+          <Button type="primary" onClick={confirmAnswer}>
+            Next question
+            <Icon type="right" />
+          </Button>
         </div>
-        ;
       </div>
+      {AnswerChart(dataForChart)}
     </Container>
   );
 };

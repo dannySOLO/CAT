@@ -1,10 +1,46 @@
 .login {
   :global {
     .container {
+      display: block;
+      margin-top: 25vh;
       text-align: center;
-      margin-top: 5em;
+      .title {
+        display: inline-block;
+        img {
+          height: 100%;
+        }
+        .anticon,
+        .anticon-ant-design {
+          font-size: 3em;
+          padding-right: 0.3em;
+        }
+        h1 {
+          float: right;
+          font-weight: bolder;
+        }
+      }
+      .description {
+        display: block;
+        width: 100%;
+      }
 
-      //   }
+      .google-login {
+        margin-top: 3em;
+        max-width: 100%;
+        background-color: #419bf0 !important;
+        border-radius: 0.2em !important;
+        span {
+          color: white !important;
+          padding: 0.3em 6em !important;
+        }
+      }
+    }
+
+    .copyright {
+      position: fixed;
+      left: 50%;
+      top: 95vh;
+      transform: translate(-50%, 0);
     }
   }
 }
