@@ -26,9 +26,9 @@ const Login = () => {
         <div className="title">
           {/* <img src="/../public/logo512.png" alt="App Logo" /> */}
           <Icon type="ant-design" />
-          <h1>IRT BASED CAT TEST</h1>
+          <h1>IRT - BASED CAT TEST</h1>
         </div>
-        <p className="description">Smart test technology for the future</p>
+        <p className="description">Smart testing technology for the future</p>
         <GoogleLogin
           className="google-login"
           clientId="49232506940-j3l8g1uqob63p4usbtl09k9jh9hm3hf2.apps.googleusercontent.com"

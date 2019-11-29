@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Container from '../Container/Container';
-import { Radio, Button, Icon } from 'antd';
+import MainLayout from 'layouts/Main';
+import { Radio, Button, Icon, PageHeader } from 'antd';
 
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
 import api from '../../services/api';
 
-const TITLE = 'Test';
+const TITLE = null;
 
 const Test = () => {
   const [chose, setChose] = useState('');
@@ -52,7 +52,7 @@ const Test = () => {
       {
         id: '0',
         content:
-          'Answer 0uhasdkjhasdjhfkajsdhrkjhwsdklafjnaks;jehrjasdf;jkanslkejroasdng;akjdsbfkjawelkjfaskdflkasjdhfaskdhtkawjkjfsdabkfjas that la vai lzckjlsadhasdjhfksadjf',
+          'Answer 0uhasdkjhasdjhfkajsdhrkjhwsdklafjnaks;jehrjasdf;jkanslkejroasdng;akjdsbfkjawelkjfaskdflkasjdhfaskdhtkawjkjfsdabkfjas that la vai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksadjf',
       },
       {
         id: '1',
@@ -76,6 +76,7 @@ const Test = () => {
   // ======== question - answer =======
 
   const radioStyle = {
+    // width: '400px',
     display: 'block',
     height: '30px',
     lineHeight: '30px',
@@ -102,8 +103,9 @@ const Test = () => {
     // send setChose data to Api
   };
 
+  const header = <PageHeader title={TITLE} />;
   return (
-    <Container title={TITLE}>
+    <MainLayout header={header}>
       <div className={styles.test}>
         <div className="container">
           <h2>
@@ -117,7 +119,7 @@ const Test = () => {
         </div>
       </div>
       {AnswerChart(dataForChart)}
-    </Container>
+    </MainLayout>
   );
 };
 
