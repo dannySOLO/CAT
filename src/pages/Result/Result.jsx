@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MainLayout from 'layouts/Main';
 import { PageHeader } from 'antd';
-import { styles } from './Result.module.scss';
+import styles from './Result.module.scss';
 
 const TITLE = 'Result';
 const Result = () => {

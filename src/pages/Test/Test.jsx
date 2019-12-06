@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MainLayout from 'layouts/Main';
-import { Radio, Button, Icon, PageHeader } from 'antd';
+import { Radio, Button, Icon, PageHeader, Statistic } from 'antd';
 
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
@@ -103,22 +103,33 @@ const Test = () => {
     // send setChose data to Api
   };
 
+  const deadline = 1575482415863;
+
+  const handleFinish = () => {};
+
   const header = <PageHeader title={TITLE} />;
   return (
     <MainLayout header={header}>
       <div className={styles.test}>
         <div className="container">
-          <h2>
-            Question {question.id + 1}: {question.content}
-          </h2>
+          <div className="top">
+            <h2>
+              Question {question.id + 1}: {question.content}
+            </h2>
+            <Statistic.Countdown
+              title="Time left: "
+              value={deadline}
+              onFinish={handleFinish}
+            />
+          </div>
           {showQuestion()}
           <Button type="primary" onClick={confirmAnswer}>
             Next question
             <Icon type="right" />
           </Button>
+          {AnswerChart(dataForChart)}
         </div>
       </div>
-      {AnswerChart(dataForChart)}
     </MainLayout>
   );
 };
