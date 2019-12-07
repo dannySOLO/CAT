@@ -12,7 +12,7 @@ const Login = () => {
   const handleSuccess = res => {
     console.log(res);
     api
-      .POST('/login', { googleTokenId: res.tokenId })
+      .POST('/login', { token: res.acessToken })
       .then(serverRes => console.log(serverRes));
   };
 

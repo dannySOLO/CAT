@@ -113,14 +113,14 @@ const Test = () => {
       <div className={styles.test}>
         <div className="container">
           <div className="top">
-            <h2>
-              Question {question.id + 1}: {question.content}
-            </h2>
             <Statistic.Countdown
               title="Time left: "
               value={deadline}
               onFinish={handleFinish}
             />
+            <h2>
+              Question {question.id + 1}: {question.content}
+            </h2>
           </div>
           {showQuestion()}
           <Button type="primary" onClick={confirmAnswer}>
