@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import GoogleLogin from 'react-google-login';
 import styles from './Login.module.scss';
@@ -9,15 +9,16 @@ import api from '../../services/api';
 const TITLE = 'Login';
 
 const Login = () => {
+  const [data, setData] = useState();
   const handleSuccess = res => {
     console.log(res);
     api
-      .POST('/login', { token: res.acessToken })
-      .then(serverRes => console.log(serverRes));
+      .POST('/login', { Token: res.accessToken })
+      .then(serRes => setData(serRes));
   };
 
   const handleFailure = res => {
-    console.log(res.error);
+    console.log('error:', res.error);
   };
 
   return (
