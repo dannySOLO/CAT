@@ -28,12 +28,16 @@ const Header = ({ sidebarToggler, currentUser, ...rest }) => {
           <SubMenu
             title={
               <>
-                <Avatar
-                  style={{ backgroundColor: '#2f54eb' }}
-                  icon="user"
-                  src={currentUser.avatar}
-                />
-                <span className="ml-1">{Cookies.get('userName')}</span>
+                {Cookies.get('avatar') && (
+                  <Avatar
+                    style={{ backgroundColor: '#2f54eb' }}
+                    icon="user"
+                    src={Cookies.get('avatar').avatar}
+                  />
+                )}
+                {Cookies.get('userName') && (
+                  <span className="ml-1">{Cookies.get('userName')}</span>
+                )}
               </>
             }
           >
