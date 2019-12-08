@@ -4,11 +4,11 @@ import configs from 'configs/configs';
 
 const onErrors = [];
 
-async function sendRequest(method, path, data = {}, header = {}) {
+async function sendRequest(method, path, data = {}, headers = {}) {
   let url = `${configs.apiBaseURL}${path}`;
   const opts = {
     method,
-    header,
+    headers,
   };
   if (method === 'GET' || method === 'DELETE') {
     const query = qs.stringify(data);
@@ -16,7 +16,7 @@ async function sendRequest(method, path, data = {}, header = {}) {
       url += `?${query}`;
     }
   } else {
-    opts.header = { ...opts.header, 'Content-Type': 'application/json' };
+    opts.headers = { ...opts.headers, 'Content-Type': 'application/json' };
     opts.body = JSON.stringify(data);
   }
   try {

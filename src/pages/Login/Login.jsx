@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import styles from './Login.module.scss';
 import { Icon } from 'antd';
+import Cookies from 'js-cookie';
 
 import api from '../../services/api';
 
-const TITLE = 'Login';
+// const TITLE = 'Login';
 
 const Login = () => {
   const [data, setData] = useState();

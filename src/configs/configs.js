@@ -1,4 +1,4 @@
 export default {
-  apiBaseURL: 'https://localhost:5001/api/Users',
+  apiBaseURL: '/api/Users',
   sidebarWidth: 256,
 };
