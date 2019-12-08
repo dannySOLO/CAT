@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import MainLayout from 'layouts/Main';
 import { Radio, Button, Icon, PageHeader, Statistic, Modal } from 'antd';
-import Cookies from 'js-cookie';
 
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
@@ -13,6 +12,8 @@ const TITLE = null;
 const Test = () => {
   const history = useHistory();
   const [chose, setChose] = useState('');
+  const [error, setError] = useState(false);
+
   const dataForChart = [
     {
       id: 0,
@@ -114,7 +115,7 @@ const Test = () => {
     Modal.confirm({
       title: 'Do you want to start the test?',
       content: 'The test will last in 45 minutes.',
-      okTest: 'Start',
+      okText: 'Start',
       cancelText: 'Back Home',
       onOk: { handleStart },
       onCancel: { handleCancel },
@@ -126,35 +127,40 @@ const Test = () => {
   const handleFinish = () => {};
 
   useEffect(() => {
-    api.GET('/CheckContinueExam').then(res => {
-      if (res.continued) {
-        confirmContinue();
-      }
-      // else history.push('/');
-      else {
-        confirmStart();
-      }
-    });
+    api
+      .GET('/CheckContinueExam')
+      .then(res => {
+        if (res.continued) {
+          confirmContinue();
+        }
+        // else history.push('/');
+        else {
+          confirmStart();
+        }
+      })
+      .catch(() => setError(true));
   });
   const header = <PageHeader title={TITLE} />;
   return (
     <MainLayout header={header}>
       <div className={styles.test}>
-        <div className="container">
-          <div className="top">
-            <Statistic.Countdown
-              title="Time left: "
-              value={deadline}
-              onFinish={handleFinish}
-            />
+        {(error && <div>Error</div>) || (
+          <div className="container">
+            <div className="top">
+              <Statistic.Countdown
+                title="Time left: "
+                value={deadline}
+                onFinish={handleFinish}
+              />
+            </div>
+            {showQuestion()}
+            <Button type="primary" onClick={confirmAnswer}>
+              Next question
+              <Icon type="right" />
+            </Button>
+            {AnswerChart(dataForChart)}
           </div>
-          {showQuestion()}
-          <Button type="primary" onClick={confirmAnswer}>
-            Next question
-            <Icon type="right" />
-          </Button>
-          {AnswerChart(dataForChart)}
-        </div>
+        )}
       </div>
     </MainLayout>
   );
