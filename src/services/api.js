@@ -1,10 +1,18 @@
 import qs from 'query-string';
+import Cookies from 'js-cookie';
 
 import configs from 'configs/configs';
 
 const onErrors = [];
 
-async function sendRequest(method, path, data = {}, headers = {}) {
+async function sendRequest(
+  method,
+  path,
+  data = {},
+  headers = {
+    Authorization: `Bearer ${Cookies.get('authToken')}`,
+  },
+) {
   let url = `${configs.apiBaseURL}${path}`;
   const opts = {
     method,
