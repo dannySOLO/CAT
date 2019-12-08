@@ -11,10 +11,8 @@ import api from '../../services/api';
 
 const Login = () => {
   const history = useHistory();
-  const [data, setData] = useState();
   const handleSuccess = res => {
     api.POST('/login', { Token: res.accessToken }).then(serRes => {
-      setData(serRes);
       Cookies.set('id', serRes.id);
       Cookies.set('authToken', serRes.authToken);
       Cookies.set('userName', serRes.userName);

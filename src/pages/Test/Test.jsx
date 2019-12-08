@@ -13,6 +13,7 @@ const Test = () => {
   const history = useHistory();
   const [chose, setChose] = useState('');
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dataForChart = [
     {
@@ -86,9 +87,18 @@ const Test = () => {
   const confirmAnswer = () => {
     // send setChose data to Api
   };
+
+  const [visible, setVisible] = useState({
+    cont: false,
+    start: false,
+  });
+
   const handleOk = () => {
+    setLoading(true);
     api.GET('/ContinueExam').then(res => {
       setResModel(res);
+      setVisible(false);
+      setLoading(false);
     });
   };
 
@@ -97,29 +107,64 @@ const Test = () => {
   };
 
   const confirmContinue = () => {
-    Modal.confirm({
-      title: 'Do you want to continue?',
-      content: 'Continue the previos exam or back to dashboard...',
-      okText: 'Continue',
-      cancelText: 'Back Home',
-      onOk: { handleOk },
-      onCancel: { handleCancel },
-    });
+    return (
+      <Modal
+        title="Continue doing the recent test?"
+        visible={visible.cont}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Back Home
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+          >
+            Continue testing
+          </Button>,
+        ]}
+      >
+        You have 45 minutes to do the test
+      </Modal>
+    );
   };
 
   const handleStart = () => {
-    api.GET('BeginDoTest').then(res => setResModel(res));
+    setLoading(true);
+    api.GET('BeginDoTest').then(res => {
+      setResModel(res);
+      setVisible(false);
+      setLoading(false);
+    });
   };
 
   const confirmStart = () => {
-    Modal.confirm({
-      title: 'Do you want to start the test?',
-      content: 'The test will last in 45 minutes.',
-      okText: 'Start',
-      cancelText: 'Back Home',
-      onOk: { handleStart },
-      onCancel: { handleCancel },
-    });
+    return (
+      <Modal
+        title="Confirm to start the test?"
+        visible={visible.start}
+        onOk={handleStart}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Back Home
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleStart}
+          >
+            Start testing
+          </Button>,
+        ]}
+      >
+        You have 45 minutes to do the test
+      </Modal>
+    );
   };
 
   const deadline = 1575482415863;
@@ -131,11 +176,13 @@ const Test = () => {
       .GET('/CheckContinueExam')
       .then(res => {
         if (res.continued) {
-          confirmContinue();
-        }
-        // else history.push('/');
-        else {
-          confirmStart();
+          setVisible({
+            cont: true,
+          });
+        } else {
+          setVisible({
+            start: true,
+          });
         }
       })
       .catch(() => setError(true));
@@ -146,6 +193,8 @@ const Test = () => {
       <div className={styles.test}>
         {(error && <div>Error</div>) || (
           <div className="container">
+            {confirmStart()}
+            {confirmContinue()}
             <div className="top">
               <Statistic.Countdown
                 title="Time left: "

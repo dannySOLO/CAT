@@ -39,7 +39,7 @@ const App = () => {
       <Switch>
         <RouteLogin exact path="/login" component={Login} />
         <RouteAuth exact path="/" component={Dashboard} />
-        <RouteAuth exact path="/test" component={Test} />
+        <Route exact path="/test" component={Test} />
         <RouteAuth exact path="/result" component={Result} />
 
         <Route render={() => <Error code={404} />} />
