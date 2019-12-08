@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, withRouter, matchPath } from 'react-router-dom';
 import { Layout, Menu, Icon, Avatar, Modal } from 'antd';
 import classNames from 'classnames';
+import Cookies from 'js-cookie';
 
 import Footer from './Footer';
 import config from 'configs/configs';
@@ -25,16 +26,16 @@ const Header = ({ sidebarToggler, currentUser, ...rest }) => {
       <div className="right">
         <Menu theme="dark" mode="horizontal">
           <SubMenu
-            title={() => (
+            title={
               <>
                 <Avatar
                   style={{ backgroundColor: '#2f54eb' }}
                   icon="user"
                   src={currentUser.avatar}
                 />
-                <span className="ml-1">{currentUser.name}</span>
+                <span className="ml-1">{Cookies.get('userName')}</span>
               </>
-            )}
+            }
           >
             <Menu.Item onClick={confirmLogout}>
               <Icon type="logout" />
