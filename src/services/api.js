@@ -5,18 +5,15 @@ import configs from 'configs/configs';
 
 const onErrors = [];
 
-async function sendRequest(
-  method,
-  path,
-  data = {},
-  headers = {
-    Authorization: `Bearer ${Cookies.get('authToken')}`,
-  },
-) {
+async function sendRequest(method, path, data = {}, headers = {}) {
   let url = `${configs.apiBaseURL}${path}`;
   const opts = {
     method,
     headers,
+  };
+  opts.headers = {
+    ...opts.headers,
+    Authorization: `Bearer ${Cookies.get('authToken')}`,
   };
   if (method === 'GET' || method === 'DELETE') {
     const query = qs.stringify(data);
