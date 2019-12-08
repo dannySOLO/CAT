@@ -13,11 +13,11 @@ import styles from './layout.module.scss';
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const Header = ({ sidebarToggler, currentUser, ...rest }) => {
+const Header = ({ sidebarToggler, ...rest }) => {
   const confirmLogout = () =>
     Modal.confirm({
-      title: 'Do you sure you want to logout?',
-      onOk: () => alert('TODO'),
+      title: 'Are you sure to logout?',
+      onOk: () => Cookies.remove('authToken'),
     });
 
   return (
