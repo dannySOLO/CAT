@@ -14,6 +14,7 @@ const Test = () => {
   const [chose, setChose] = useState('');
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [level, setLevel] = useState(2);
 
   const dataForChart = [
     {
@@ -91,6 +92,7 @@ const Test = () => {
   const [visible, setVisible] = useState({
     cont: false,
     start: false,
+    level: false,
   });
 
   const handleOk = () => {
@@ -99,7 +101,7 @@ const Test = () => {
       .GET('/ContinueExam')
       .then(res => {
         setResModel(res);
-        setVisible(false);
+        setVisible({});
         setLoading(false);
       })
       .catch(() => setError(true));
@@ -107,6 +109,11 @@ const Test = () => {
 
   const handleCancel = () => {
     history.push('/');
+    setVisible({
+      cont: false,
+      start: false,
+      level: false,
+    });
   };
 
   const confirmContinue = () => {
@@ -135,24 +142,17 @@ const Test = () => {
     );
   };
 
-  const handleStart = () => {
-    setLoading(true);
-    api
-      .GET('/BeginDoTest')
-      .then(res => {
-        setResModel(res);
-        setVisible(false);
-        setLoading(false);
-      })
-      .catch(() => setError(true));
+  const showLevelSelection = () => {
+    setVisible({
+      level: true,
+    });
   };
-
   const confirmStart = () => {
     return (
       <Modal
         title="Confirm to start the test?"
         visible={visible.start}
-        onOk={handleStart}
+        onOk={showLevelSelection}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
@@ -162,13 +162,42 @@ const Test = () => {
             key="submit"
             type="primary"
             loading={loading}
-            onClick={handleStart}
+            onClick={showLevelSelection}
           >
             Start testing
           </Button>,
         ]}
       >
         You have 45 minutes to do the test
+      </Modal>
+    );
+  };
+
+  const handleStart = () => {
+    setLoading(true);
+    api
+      .POST('/BeginDoTest', { level: level })
+      .then(res => {
+        setResModel(res);
+        setVisible({});
+        setLoading(false);
+      })
+      .catch(() => setError(true));
+  };
+
+  const chooseLevel = () => {
+    return (
+      <Modal
+        title="Choose the startup level..."
+        visible={visible.level}
+        onOk={handleStart}
+        onCancel={handleCancel}
+      >
+        <Radio.Group value={level} onChange={e => setLevel(e.target.value)}>
+          <Radio.Button value="1">Easy</Radio.Button>
+          <Radio.Button value="2">Average</Radio.Button>
+          <Radio.Button value="3">Hard</Radio.Button>
+        </Radio.Group>
       </Modal>
     );
   };
@@ -193,15 +222,16 @@ const Test = () => {
         }
       })
       .catch(() => setError(true));
-  });
+  }, []);
   const header = <PageHeader title={TITLE} />;
   return (
     <MainLayout header={header}>
       <div className={styles.test}>
         {(error && <div>Error</div>) || (
           <div className="container">
-            {confirmStart()}
             {confirmContinue()}
+            {confirmStart()}
+            {chooseLevel()}
             <div className="top">
               <Statistic.Countdown
                 title="Time left: "
