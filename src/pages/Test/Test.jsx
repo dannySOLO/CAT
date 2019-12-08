@@ -16,18 +16,6 @@ const Test = () => {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState(2);
 
-  console.log(
-    'DDDDDD     KK   KK   MM      MM' +
-      '\n' +
-      'DD    DD   KK  K     MM  MM  MM' +
-      '\n' +
-      'DD     DD  KK KK     MM      MM' +
-      '\n' +
-      'DD    DD   KK  KK    MM      MM' +
-      '\n' +
-      'DDDDDD     KK    KK  MM      MM',
-  );
-
   const dataForChart = [
     {
       id: 0,
@@ -82,7 +70,7 @@ const Test = () => {
         {resModel.idExam && (
           <div>
             <h2>
-              Question {resModel.idQuestion}: {resModel.contentQuestion}
+              Question {resModel.questionStt}: {resModel.contentQuestion}
             </h2>
             <Radio.Group id="ans-choose" onChange={handleChange} value={chose}>
               {resModel.answers.map(ans => (
@@ -149,7 +137,7 @@ const Test = () => {
           </Button>,
         ]}
       >
-        You have 45 minutes to do the test
+        You have an unfinished exam
       </Modal>
     );
   };
@@ -214,7 +202,8 @@ const Test = () => {
     );
   };
 
-  const deadline = 1575482415863;
+  const deadline = resModel.endDate;
+  // const deadline = new Date(resModel.endDate); // deadline.getTime)();
 
   const handleFinish = () => {};
 
