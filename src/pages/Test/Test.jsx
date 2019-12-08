@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import MainLayout from 'layouts/Main';
-import { Radio, Button, Icon, PageHeader, Statistic } from 'antd';
+import { Radio, Button, Icon, PageHeader, Statistic, Modal } from 'antd';
+import Cookies from 'js-cookie';
 
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
@@ -9,6 +11,7 @@ import api from '../../services/api';
 const TITLE = null;
 
 const Test = () => {
+  const history = useHistory();
   const [chose, setChose] = useState('');
   const dataForChart = [
     {
@@ -45,38 +48,9 @@ const Test = () => {
     },
   ];
 
-  const [question, setQuestion] = useState({
-    id: '0',
-    content: 'Question content',
-    answers: [
-      {
-        id: '0',
-        content:
-          'Answer 0uhasdkjhasdjhfkajsdhrkjhwsdklafjnaks;jehrjasdf;jkanslkejroasdng;akjdsbfkjawelkjfaskdflkasjdhfaskdhtkawjkjfsdabkfjas that la vai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksai lzckjlsadhasdjhfksadjf',
-      },
-      {
-        id: '1',
-        content: 'Answer 1',
-      },
-      {
-        id: '2',
-        content: 'Answer 2',
-      },
-      {
-        id: '3',
-        content: 'Answer 3',
-      },
-    ],
-  });
-
-  // useEffect(() => {
-  //   api.GET('/question').then(res => setQuestion(res));
-  // }, []);
-
-  // ======== question - answer =======
+  const [resModel, setResModel] = useState({});
 
   const radioStyle = {
-    // width: '400px',
     display: 'block',
     height: '30px',
     lineHeight: '30px',
@@ -89,24 +63,99 @@ const Test = () => {
 
   const showQuestion = () => {
     return (
-      <Radio.Group id="ans-choose" onChange={handleChange} value={chose}>
-        {question.answers.map(ans => (
-          <Radio style={radioStyle} value={ans.id + 1}>
-            {ans.content}
-          </Radio>
-        ))}
-      </Radio.Group>
+      <div>
+        {resModel.idExam && (
+          <div>
+            <h2>
+              Question {resModel.idQuestion}: {resModel.contentQuestion}
+            </h2>
+            <Radio.Group id="ans-choose" onChange={handleChange} value={chose}>
+              {resModel.answers.map(ans => (
+                <Radio style={radioStyle} value={ans.idAnswer}>
+                  {ans.contentAnswer}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </div>
+        )}
+      </div>
     );
   };
 
   const confirmAnswer = () => {
     // send setChose data to Api
   };
+  const handleOk = () => {
+    api.GET('/ContinueExam').then(res => {
+      setResModel(res);
+    });
+  };
+
+  const handleCancel = () => {
+    history.push('/');
+  };
+
+  const confirmContinue = () => {
+    Modal.confirm({
+      title: 'Do you want to continue?',
+      content: 'Continue the previos exam or back to dashboard...',
+      okText: 'Continue',
+      cancelText: 'Back Home',
+      onOk: { handleOk },
+      onCancel: { handleCancel },
+    });
+  };
+
+  const handleStart = () => {
+    api
+      .GET(
+        'BeginDoTest',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('authToken')}`,
+          },
+        },
+      )
+      .then(res => setResModel(res));
+  };
+
+  const confirmStart = () => {
+    Modal.confirm({
+      title: 'Do you want to start the test?',
+      content: 'The test will last in 45 minutes.',
+      okTest: 'Start',
+      cancelText: 'Back Home',
+      onOk: { handleStart },
+      onCancel: { handleCancel },
+    });
+  };
 
   const deadline = 1575482415863;
 
   const handleFinish = () => {};
 
+  useEffect(() => {
+    api
+      .GET(
+        '/CheckContinueExam',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('authToken')}`,
+          },
+        },
+      )
+      .then(res => {
+        if (res.continued) {
+          confirmContinue();
+        }
+        // else history.push('/');
+        else {
+          confirmStart();
+        }
+      });
+  });
   const header = <PageHeader title={TITLE} />;
   return (
     <MainLayout header={header}>
@@ -118,9 +167,6 @@ const Test = () => {
               value={deadline}
               onFinish={handleFinish}
             />
-            <h2>
-              Question {question.id + 1}: {question.content}
-            </h2>
           </div>
           {showQuestion()}
           <Button type="primary" onClick={confirmAnswer}>

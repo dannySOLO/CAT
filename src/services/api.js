@@ -50,11 +50,11 @@ async function sendRequest(method, path, data = {}, headers = {}) {
 }
 
 export default {
-  GET(path, data = {}) {
-    return sendRequest('GET', path, data);
+  GET(path, data = {}, headers = {}) {
+    return sendRequest('GET', path, data, headers);
   },
-  POST(path, data = {}) {
-    return sendRequest('POST', path, data);
+  POST(path, data = {}, headers = {}) {
+    return sendRequest('POST', path, data, headers);
   },
   PUT(path, data = {}) {
     return sendRequest('PUT', path, data);

@@ -18,6 +18,7 @@ const Login = () => {
       Cookies.set('id', serRes.id);
       Cookies.set('authToken', serRes.authToken);
       Cookies.set('userName', serRes.userName);
+      Cookies.set('continued', serRes.contuniued);
       history.push('/');
     });
   };
