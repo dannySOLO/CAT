@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 
 import Error from 'pages/Error';
 
-
 const loading = () => {
   return <div>Loading...</div>;
 };
@@ -14,22 +13,21 @@ const Login = lazy(() => import('./pages/Login/Login'));
 const Test = lazy(() => import('./pages/Test/Test'));
 const Result = lazy(() => import('./pages/Result/Result'));
 
-
-const RouteAuth = (...props) => {
+const RouteAuth = ({ ...props }) => {
   if (Cookies.get('authToken')) {
-    return <Route {...props} />
+    return <Route {...props} />;
   }
 
-  return <Route component={Login} />
-}
+  return <Route component={Login} />;
+};
 
-const RouteLogin = ...props => {
-  if (!Cookies.get('authToken') ) {
-    return <Route {...props} />
+const RouteLogin = ({ ...props }) => {
+  if (!Cookies.get('authToken')) {
+    return <Route {...props} />;
   }
 
-  return <Route component={Dashboard} />
-}
+  return <Route component={Dashboard} />;
+};
 
 const App = () => {
   return (
@@ -39,7 +37,7 @@ const App = () => {
         <RouteAuth exact path="/" component={Dashboard} />
         <RouteAuth exact path="/test" component={Test} />
         <RouteAuth exact path="/result" component={Result} />
-        
+
         <Route render={() => <Error code={404} />} />
       </Switch>
     </Suspense>
