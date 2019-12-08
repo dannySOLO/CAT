@@ -107,17 +107,7 @@ const Test = () => {
   };
 
   const handleStart = () => {
-    api
-      .GET(
-        'BeginDoTest',
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('authToken')}`,
-          },
-        },
-      )
-      .then(res => setResModel(res));
+    api.GET('BeginDoTest').then(res => setResModel(res));
   };
 
   const confirmStart = () => {
@@ -136,25 +126,15 @@ const Test = () => {
   const handleFinish = () => {};
 
   useEffect(() => {
-    api
-      .GET(
-        '/CheckContinueExam',
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('authToken')}`,
-          },
-        },
-      )
-      .then(res => {
-        if (res.continued) {
-          confirmContinue();
-        }
-        // else history.push('/');
-        else {
-          confirmStart();
-        }
-      });
+    api.GET('/CheckContinueExam').then(res => {
+      if (res.continued) {
+        confirmContinue();
+      }
+      // else history.push('/');
+      else {
+        confirmStart();
+      }
+    });
   });
   const header = <PageHeader title={TITLE} />;
   return (
