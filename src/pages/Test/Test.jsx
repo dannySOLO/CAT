@@ -16,6 +16,18 @@ const Test = () => {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState(2);
 
+  console.log(
+    'DDDDDD     KK   KK   MM      MM' +
+      '\n' +
+      'DD    DD   KK  K     MM  MM  MM' +
+      '\n' +
+      'DD     DD  KK KK     MM      MM' +
+      '\n' +
+      'DD    DD   KK  KK    MM      MM' +
+      '\n' +
+      'DDDDDD     KK    KK  MM      MM',
+  );
+
   const dataForChart = [
     {
       id: 0,
@@ -194,9 +206,9 @@ const Test = () => {
         onCancel={handleCancel}
       >
         <Radio.Group value={level} onChange={e => setLevel(e.target.value)}>
-          <Radio.Button value="1">Easy</Radio.Button>
-          <Radio.Button value="2">Average</Radio.Button>
-          <Radio.Button value="3">Hard</Radio.Button>
+          <Radio.Button value={1}>Easy</Radio.Button>
+          <Radio.Button value={2}>Average</Radio.Button>
+          <Radio.Button value={3}>Hard</Radio.Button>
         </Radio.Group>
       </Modal>
     );
