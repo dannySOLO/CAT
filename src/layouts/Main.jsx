@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, withRouter, matchPath } from 'react-router-dom';
+import { Link, withRouter, matchPath, useHistory } from 'react-router-dom';
 import { Layout, Menu, Icon, Avatar, Modal } from 'antd';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
@@ -14,10 +14,14 @@ const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const Header = ({ sidebarToggler, ...rest }) => {
+  const history = useHistory();
   const confirmLogout = () =>
     Modal.confirm({
       title: 'Are you sure to logout?',
-      onOk: () => Cookies.remove('authToken'),
+      onOk: () => {
+        Cookies.remove('authToken');
+        history.push('/login');
+      },
     });
 
   return (

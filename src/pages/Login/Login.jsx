@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useHistory } from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import styles from './Login.module.scss';
 import { Icon } from 'antd';
@@ -10,6 +10,7 @@ import api from '../../services/api';
 // const TITLE = 'Login';
 
 const Login = () => {
+  const history = useHistory();
   const [data, setData] = useState();
   const handleSuccess = res => {
     api.POST('/login', { Token: res.accessToken }).then(serRes => {
@@ -17,6 +18,7 @@ const Login = () => {
       Cookies.set('id', serRes.id);
       Cookies.set('authToken', serRes.authToken);
       Cookies.set('userName', serRes.userName);
+      history.push('/');
     });
   };
 
