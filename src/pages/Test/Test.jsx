@@ -95,11 +95,14 @@ const Test = () => {
 
   const handleOk = () => {
     setLoading(true);
-    api.GET('/ContinueExam').then(res => {
-      setResModel(res);
-      setVisible(false);
-      setLoading(false);
-    });
+    api
+      .GET('/ContinueExam')
+      .then(res => {
+        setResModel(res);
+        setVisible(false);
+        setLoading(false);
+      })
+      .catch(() => setError(true));
   };
 
   const handleCancel = () => {
@@ -134,11 +137,14 @@ const Test = () => {
 
   const handleStart = () => {
     setLoading(true);
-    api.GET('BeginDoTest').then(res => {
-      setResModel(res);
-      setVisible(false);
-      setLoading(false);
-    });
+    api
+      .GET('/BeginDoTest')
+      .then(res => {
+        setResModel(res);
+        setVisible(false);
+        setLoading(false);
+      })
+      .catch(() => setError(true));
   };
 
   const confirmStart = () => {
@@ -172,6 +178,7 @@ const Test = () => {
   const handleFinish = () => {};
 
   useEffect(() => {
+    setError(false);
     api
       .GET('/CheckContinueExam')
       .then(res => {
