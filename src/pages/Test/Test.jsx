@@ -85,15 +85,28 @@ const Test = () => {
     );
   };
 
-  const confirmAnswer = () => {
-    // send setChose data to Api
-  };
-
   const [visible, setVisible] = useState({
     cont: false,
     start: false,
     level: false,
+    end: false,
   });
+  const confirmAnswer = () => {
+    setLoading(true);
+    api
+      .POST('/getNextQuestion', {
+        examId: resModel.idExam,
+        answerId: resModel.idAnswer,
+      })
+      .then(res => {
+        setLoading(false);
+        setResModel(res);
+        if (res.finished !== 'cont') {
+          setVisible({ end: true });
+        }
+      })
+      .catch(() => setError(true));
+  };
 
   const handleOk = () => {
     setLoading(true);
@@ -109,11 +122,45 @@ const Test = () => {
 
   const handleCancel = () => {
     history.push('/');
-    setVisible({
-      cont: false,
-      start: false,
-      level: false,
-    });
+    setVisible({});
+  };
+
+  const showResult = () => {
+    history.push('/result');
+    setVisible({});
+  };
+
+  const confirmEnd = status => {
+    let title;
+    let text;
+    if (status === 'complete') {
+      title = 'Complete!';
+      text = 'You passed your exam!';
+    } else if (status === 'timeout') {
+      title = 'Time up!';
+      text = 'You have not completed your exam!';
+    } else if (status === 'notvalue') {
+      title = 'Cannot evaluate!';
+      text = 'You are not evaluated after the test!';
+    }
+    return (
+      <Modal
+        title={title}
+        visible={visible.end}
+        onOk={showResult}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Back Home
+          </Button>,
+          <Button key="submit" type="primary" onClick={showResult}>
+            Show Result
+          </Button>,
+        ]}
+      >
+        {text}
+      </Modal>
+    );
   };
 
   const confirmContinue = () => {
@@ -137,7 +184,7 @@ const Test = () => {
           </Button>,
         ]}
       >
-        You have an unfinished exam
+        You have an unfinished exam.
       </Modal>
     );
   };
@@ -168,7 +215,7 @@ const Test = () => {
           </Button>,
         ]}
       >
-        You have 45 minutes to do the test
+        You will have 45 minutes to do the test!
       </Modal>
     );
   };
@@ -205,7 +252,11 @@ const Test = () => {
   const deadline = resModel.endDate;
   // const deadline = new Date(resModel.endDate); // deadline.getTime)();
 
-  const handleFinish = () => {};
+  const handleFinish = () => {
+    setVisible({
+      end: true,
+    });
+  };
 
   useEffect(() => {
     setError(false);
@@ -233,6 +284,7 @@ const Test = () => {
             {confirmContinue()}
             {confirmStart()}
             {chooseLevel()}
+            {confirmEnd(resModel.finished)}
             <div className="top">
               <Statistic.Countdown
                 title="Time left: "
@@ -241,11 +293,18 @@ const Test = () => {
               />
             </div>
             {showQuestion()}
-            <Button type="primary" onClick={confirmAnswer}>
+            <Button
+              type="primary"
+              loadingmodal
+              confirm
+              bootstrap={loading}
+              onClick={confirmAnswer}
+            >
               Next question
               <Icon type="right" />
             </Button>
-            {AnswerChart(dataForChart)}
+
+            {/* {AnswerChart(dataForChart)} */}
           </div>
         )}
       </div>
