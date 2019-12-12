@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <MainLayout header={header}>
       <Card className={styles.dashboard} bordered={false}>
-        <h3>TODO</h3>
+        <h3>Something to xamlz*********</h3>
       </Card>
     </MainLayout>
   );

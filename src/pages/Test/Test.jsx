@@ -130,18 +130,18 @@ const Test = () => {
     setVisible({});
   };
 
-  const confirmEnd = status => {
+  const confirmEnd = () => {
     let title;
     let text;
-    if (status === 'complete') {
+    if (resModel.finished === 'complete') {
       title = 'Complete!';
-      text = 'You passed your exam!';
-    } else if (status === 'timeout') {
+      text = `Your grade is: ${resModel.score}`;
+    } else if (resModel.finished === 'timeout') {
       title = 'Time up!';
-      text = 'You have not completed your exam!';
-    } else if (status === 'notvalue') {
-      title = 'Cannot evaluate!';
-      text = 'You are not evaluated after the test!';
+      text = 'You have not completed your exam in time!';
+    } else if (resModel.finished === 'notvalue') {
+      title = 'You complete!';
+      text = `Your grade is: ${resModel.score}`;
     }
     return (
       <Modal
@@ -223,7 +223,7 @@ const Test = () => {
   const handleStart = () => {
     setLoading(true);
     api
-      .POST('/BeginDoTest', { level: level })
+      .POST('/BeginDoTest', { level })
       .then(res => {
         setResModel(res);
         setVisible({});
@@ -284,7 +284,7 @@ const Test = () => {
             {confirmContinue()}
             {confirmStart()}
             {chooseLevel()}
-            {confirmEnd(resModel.finished)}
+            {confirmEnd()}
             <div className="top">
               <Statistic.Countdown
                 title="Time left: "

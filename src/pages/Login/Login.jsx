@@ -11,12 +11,15 @@ import api from '../../services/api';
 
 const Login = () => {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const handleSuccess = res => {
+    setLoading(true);
     api.POST('/login', { Token: res.accessToken }).then(serRes => {
       Cookies.set('id', serRes.id);
       Cookies.set('authToken', serRes.authToken);
       Cookies.set('userName', serRes.userName);
       Cookies.set('continued', serRes.contuniued);
+      setLoading(false);
       history.push('/');
     });
   };
@@ -29,7 +32,6 @@ const Login = () => {
     <div className={styles.login}>
       <div className="container">
         <div className="title">
-          {/* <img src="/../public/logo512.png" alt="App Logo" /> */}
           <Icon type="ant-design" />
           <h1>IRT - BASED CAT TEST</h1>
         </div>
@@ -42,8 +44,9 @@ const Login = () => {
           onFailure={handleFailure}
           icon={false}
         />
+        {loading && <Icon type="loading" />}
       </div>
-      <p className="copyright">Copyright &#169; 2019 UET Handsome Student</p>
+      <p className="copyright">Copyright &#169; 2019 UET Talented Student</p>
     </div>
   );
 };

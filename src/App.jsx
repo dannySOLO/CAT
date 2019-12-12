@@ -17,17 +17,17 @@ const loginRedirect = () => <Redirect to="/login" />;
 
 const dashboardRedirect = () => <Redirect to="/" />;
 
-const RouteAuth = ({ ...props }) => {
+const RouteAuth = props => {
   if (Cookies.get('authToken')) {
-    return <Route {...props} />;
+    return <Route {...props} location={null} />;
   }
 
   return <Route component={loginRedirect} />;
 };
 
-const RouteLogin = ({ ...props }) => {
+const RouteLogin = props => {
   if (!Cookies.get('authToken')) {
-    return <Route {...props} />;
+    return <Route {...props} location={null} />;
   }
 
   return <Route component={dashboardRedirect} />;
@@ -39,7 +39,7 @@ const App = () => {
       <Switch>
         <RouteLogin exact path="/login" component={Login} />
         <RouteAuth exact path="/" component={Dashboard} />
-        <Route exact path="/test" component={Test} />
+        <RouteAuth exact path="/test" component={Test} />
         <RouteAuth exact path="/result" component={Result} />
 
         <Route render={() => <Error code={404} />} />
