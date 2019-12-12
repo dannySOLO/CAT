@@ -135,13 +135,13 @@ const Test = () => {
     let text;
     if (resModel.finished === 'complete') {
       title = 'Complete!';
-      text = `Your grade is: ${resModel.score}`;
+      text = `Your grade is: ${resModel.grade}`;
     } else if (resModel.finished === 'timeout') {
       title = 'Time up!';
       text = 'You have not completed your exam in time!';
     } else if (resModel.finished === 'notvalue') {
       title = 'You complete!';
-      text = `Your grade is: ${resModel.score}`;
+      text = `Your grade is: ${resModel.grade}`;
     }
     return (
       <Modal
