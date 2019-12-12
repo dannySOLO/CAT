@@ -96,7 +96,7 @@ const Test = () => {
     api
       .POST('/getNextQuestion', {
         examId: resModel.idExam,
-        answerId: resModel.idAnswer,
+        answerId: chose,
       })
       .then(res => {
         setLoading(false);
