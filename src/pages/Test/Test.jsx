@@ -310,7 +310,7 @@ const Test = () => {
               onClick={confirmAnswer}
             >
               Next question
-              <Icon type={loading || 'right'} />
+              <Icon type={(loading && 'loading') || 'right'} />
             </Button>
 
             {/* {AnswerChart(dataForChart)} */}
