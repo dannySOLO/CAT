@@ -15,6 +15,11 @@ const Result = () => {
     });
   }, []);
 
+  const getTime = ms => {
+    const time = new Date(ms);
+    return time;
+  };
+
   const resultTable = () => {
     return (
       <>
@@ -30,7 +35,7 @@ const Result = () => {
           return (
             <Row>
               <Col span={2}>{index + 1}</Col>
-              <Col span={12}>{new Date(item.startDate)}</Col>
+              <Col span={12}>{getTime(item.startDate)}</Col>
               <Col span={10}>{item.grade}</Col>
             </Row>
           );
