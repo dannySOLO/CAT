@@ -6,7 +6,6 @@ import { Radio, Button, Icon, PageHeader, Statistic, Modal } from 'antd';
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
 import api from '../../services/api';
-import { CountDown } from 'ant-design-pro';
 
 const TITLE = null;
 
@@ -257,9 +256,9 @@ const Test = () => {
 
   const countDown = () => {
     if (Date.now() < resModel.endDate && resModel.finished === 'cont') {
-      // window.onbeforeunload = e => {
-      //   return 'Do you want to exit this page?';
-      // };
+      window.onbeforeunload = e => {
+        return 'Do you want to exit this page?';
+      };
     }
     return (
       <Statistic.Countdown
