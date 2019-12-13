@@ -308,6 +308,7 @@ const Test = () => {
               confirm
               bootstrap={loading}
               onClick={confirmAnswer}
+              disabled={chose === ''}
             >
               Next question
               <Icon type={(loading && 'loading') || 'right'} />
