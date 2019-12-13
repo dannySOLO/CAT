@@ -96,6 +96,7 @@ const Test = () => {
   });
   const confirmAnswer = () => {
     setLoading(true);
+    setChose('');
     api
       .POST('/getNextQuestion', {
         examId: resModel.idExam,
@@ -261,7 +262,7 @@ const Test = () => {
   const countDown = () => {
     if (Date.now() < resModel.endDate && resModel.finished === 'cont') {
       window.onbeforeunload = e => {
-        return 'Do you want to exit this page?';
+        return 'You have an unfinished exam. Quit?';
       };
     }
     return (
