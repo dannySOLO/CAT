@@ -6,6 +6,7 @@ import { Radio, Button, Icon, PageHeader, Statistic, Modal } from 'antd';
 import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
 import api from '../../services/api';
+import { CountDown } from 'ant-design-pro';
 
 const TITLE = null;
 
@@ -60,7 +61,6 @@ const Test = () => {
   };
 
   const handleChange = e => {
-    console.log('chose: ', e.target.value);
     setChose(e.target.value);
   };
 
@@ -249,13 +249,25 @@ const Test = () => {
     );
   };
 
-  const deadline = resModel.endDate;
-  // const deadline = new Date(resModel.endDate); // deadline.getTime)();
-
   const handleFinish = () => {
     setVisible({
       end: true,
     });
+  };
+
+  const countDown = () => {
+    if (Date.now() < resModel.endDate && resModel.finished === 'cont') {
+      // window.onbeforeunload = e => {
+      //   return 'Do you want to exit this page?';
+      // };
+    }
+    return (
+      <Statistic.Countdown
+        title="Time left: "
+        value={resModel.endDate}
+        onFinish={handleFinish}
+      />
+    );
   };
 
   useEffect(() => {
@@ -285,13 +297,7 @@ const Test = () => {
             {confirmStart()}
             {chooseLevel()}
             {confirmEnd()}
-            <div className="top">
-              <Statistic.Countdown
-                title="Time left: "
-                value={deadline}
-                onFinish={handleFinish}
-              />
-            </div>
+            <div className="top">{countDown()}</div>
             {showQuestion()}
             <Button
               type="primary"

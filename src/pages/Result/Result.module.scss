@@ -2,6 +2,10 @@
   :global {
     .container {
       margin-left: 2em;
+      max-width: 700px;
+      .ant-row {
+        text-align: center;
+      }
     }
   }
 }
