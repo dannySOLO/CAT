@@ -73,7 +73,11 @@ const Test = () => {
             </h2>
             <Radio.Group id="ans-choose" onChange={handleChange} value={chose}>
               {resModel.answers.map(ans => (
-                <Radio style={radioStyle} value={ans.idAnswer}>
+                <Radio
+                  style={radioStyle}
+                  key={ans.idAnswer}
+                  value={ans.idAnswer}
+                >
                   {ans.contentAnswer}
                 </Radio>
               ))}
@@ -306,7 +310,7 @@ const Test = () => {
               onClick={confirmAnswer}
             >
               Next question
-              <Icon type="right" />
+              <Icon type={loading || 'right'} />
             </Button>
 
             {/* {AnswerChart(dataForChart)} */}
