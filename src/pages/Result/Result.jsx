@@ -30,7 +30,7 @@ const Result = () => {
           return (
             <Row>
               <Col span={2}>{index + 1}</Col>
-              <Col span={12}>{item.startDate}</Col>
+              <Col span={12}>{new Date(item.startDate)}</Col>
               <Col span={10}>{item.grade}</Col>
             </Row>
           );
