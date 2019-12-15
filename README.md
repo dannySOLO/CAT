@@ -2,7 +2,7 @@
 
 ## Install
 
-Requirement: Nodejs, npm || yarn
-Command: npm install || yarn install
+- Requirement: Nodejs, npm or yarn
+- Command: npm install or yarn install
 
-> > npm start || yarn start
+- Run: npm start or yarn start

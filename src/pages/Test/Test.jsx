@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import MainLayout from 'layouts/Main';
-import { Radio, Button, Icon, PageHeader, Statistic, Modal } from 'antd';
+import { Radio, Button, Icon, PageHeader, Statistic, Modal, Spin } from 'antd';
 
-import AnswerChart from '../AnswerChart/AnswerChart';
+// import AnswerChart from '../AnswerChart/AnswerChart';
 import styles from './Test.module.scss';
 import api from '../../services/api';
 
@@ -15,41 +15,42 @@ const Test = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState(2);
+  const [init, setInit] = useState(false);
 
-  const dataForChart = [
-    {
-      id: 0,
-      prediction: 5,
-    },
-    {
-      id: 1,
-      prediction: 4,
-    },
-    {
-      id: 2,
-      prediction: 6,
-    },
-    {
-      id: 3,
-      prediction: 4.5,
-    },
-    {
-      id: 4,
-      prediction: 5,
-    },
-    {
-      id: 5,
-      prediction: 5.3,
-    },
-    {
-      id: 6,
-      prediction: 5.1,
-    },
-    {
-      id: 7,
-      prediction: 5.2,
-    },
-  ];
+  // const dataForChart = [
+  //   {
+  //     id: 0,
+  //     prediction: 5,
+  //   },
+  //   {
+  //     id: 1,
+  //     prediction: 4,
+  //   },
+  //   {
+  //     id: 2,
+  //     prediction: 6,
+  //   },
+  //   {
+  //     id: 3,
+  //     prediction: 4.5,
+  //   },
+  //   {
+  //     id: 4,
+  //     prediction: 5,
+  //   },
+  //   {
+  //     id: 5,
+  //     prediction: 5.3,
+  //   },
+  //   {
+  //     id: 6,
+  //     prediction: 5.1,
+  //   },
+  //   {
+  //     id: 7,
+  //     prediction: 5.2,
+  //   },
+  // ];
 
   const [resModel, setResModel] = useState({});
 
@@ -261,7 +262,7 @@ const Test = () => {
 
   const countDown = () => {
     if (Date.now() < resModel.endDate && resModel.finished === 'cont') {
-      window.onbeforeunload = e => {
+      window.onbeforeunload = () => {
         return 'You have an unfinished exam. Quit?';
       };
     }
@@ -276,9 +277,11 @@ const Test = () => {
 
   useEffect(() => {
     setError(false);
+    setInit(true);
     api
       .GET('/CheckContinueExam')
       .then(res => {
+        setInit(false);
         if (res.continued) {
           setVisible({
             cont: true,
@@ -291,29 +294,68 @@ const Test = () => {
       })
       .catch(() => setError(true));
   }, []);
+
+  const constructor = () => {
+    return (
+      <>
+        {resModel.questionStt && (
+          <>
+            <div className="top">{countDown()}</div>
+            {showQuestion()}
+            {(loading && (
+              <Button type="primary" loading>
+                Next question
+              </Button>
+            )) || (
+              <Button
+                type="primary"
+                onClick={confirmAnswer}
+                disabled={chose === ''}
+                icon="double-right"
+              >
+                Next question
+              </Button>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
+
+  const errorNoti = () => {
+    return (
+      <div className="error">
+        <Icon type="exclamation-circle" />
+        <br />
+        Error when loading api
+      </div>
+    );
+  };
+
+  const initting = () => {
+    const style = {
+      textAlign: 'center',
+      marginTop: '30vh',
+    };
+    return (
+      <div style={style}>
+        <Spin size="large" tip="Loading...!" />
+      </div>
+    );
+  };
+
   const header = <PageHeader title={TITLE} />;
   return (
     <MainLayout header={header}>
       <div className={styles.test}>
-        {(error && <div>Error</div>) || (
+        {(error && errorNoti()) || (
           <div className="container">
+            {init && initting()}
             {confirmContinue()}
             {confirmStart()}
             {chooseLevel()}
             {confirmEnd()}
-            <div className="top">{countDown()}</div>
-            {showQuestion()}
-            <Button
-              type="primary"
-              loadingmodal
-              confirm
-              bootstrap={loading}
-              onClick={confirmAnswer}
-              disabled={chose === ''}
-            >
-              Next question
-              <Icon type={(loading && 'loading') || 'right'} />
-            </Button>
+            {constructor()}
 
             {/* {AnswerChart(dataForChart)} */}
           </div>
